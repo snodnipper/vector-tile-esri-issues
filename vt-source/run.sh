@@ -30,7 +30,19 @@ gradle init --type java-application
 
 # Add the Java protobuf library
 awk '/dependencies \{/ { print; print "    compile '\''com.google.protobuf:protobuf-java:3.1.0'\''"; next }1' build.gradle > build.gradle.tmp ; mv build.gradle.tmp build.gradle
+awk '/dependencies \{/ { print; print "    compile '\''org.slf4j:slf4j-simple:1.7.22'\''"; next }1' build.gradle > build.gradle.tmp ; mv build.gradle.tmp build.gradle
 awk '/dependencies \{/ { print; print "    compile '\''org.slf4j:slf4j-api:1.7.22'\''"; next }1' build.gradle > build.gradle.tmp ; mv build.gradle.tmp build.gradle
+
+# Add a couple of helper tasks
+echo "task esri(type: JavaExec) {" >> build.gradle
+echo "classpath sourceSets.main.runtimeClasspath" >> build.gradle
+echo "main = \"DemoFailure\"" >> build.gradle
+echo "}" >> build.gradle
+
+echo "task mapbox(type: JavaExec) {" >> build.gradle
+echo "classpath sourceSets.main.runtimeClasspath" >> build.gradle
+echo "main = \"DemoSuccess\"" >> build.gradle
+echo "}" >> build.gradle
 
 # Add demo support files
 mkdir -p src/main/java/uk/os/util
